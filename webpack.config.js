@@ -24,10 +24,9 @@ const commonConfig = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: ['.js', '.ts', '.css', '.scss', '.vue'],
+    extensions: ['.js', '.ts', '.css', '.vue'],
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      vue: '@vue/runtime-dom'
+      '@': path.resolve(__dirname, './src')
     },
     modules: ['node_modules']
   },
@@ -41,6 +40,10 @@ const commonConfig = {
           appendTsSuffixTo: [/\.vue$/]
         },
         exclude: /node_modules/
+      },
+      {
+        test: /\.styl$/,
+        loader: 'stylus-loader' // compiles Styl to CSS
       },
       {
         test: /\.vue$/,
@@ -67,21 +70,6 @@ const commonConfig = {
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         type: 'asset/inline'
-      },
-      {
-        // Refer: https://qiita.com/yuusuke510/items/af3adfd17af0114f4a2a
-        test: /\.pug$/,
-        oneOf: [
-          // this applies to pug imports inside JavaScript
-          {
-            exclude: /\.vue$/,
-            use: ['raw-loader', 'pug-plain-loader']
-          },
-          // this applies to `<template lang="pug">` in Vue components
-          {
-            use: ['pug-plain-loader']
-          }
-        ]
       }
     ]
   },
@@ -134,6 +122,14 @@ const commonConfig = {
         {
           from: './popup/index.html',
           to: './popup/index.html',
+          transform: {
+            transformer: transformHtml,
+            cache: true
+          }
+        },
+        {
+          from: './offscreen.html',
+          to: './offscreen.html',
           transform: {
             transformer: transformHtml,
             cache: true

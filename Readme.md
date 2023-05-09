@@ -7,3 +7,11 @@
 "all_frames": false
 }
 ]
+
+# 权限列表
+
+https://developer.chrome.com/docs/extensions/mv2/declare_permissions/
+
+# API reference
+
+https://developer.chrome.com/docs/extensions/reference/#stable_apis
