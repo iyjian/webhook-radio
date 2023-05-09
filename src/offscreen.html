@@ -1,13 +1,33 @@
 <script>
   // Listen for messages from the extension
   chrome.runtime.onMessage.addListener((msg) => {
-    if ('play' in msg) playAudio(msg.play)
+    if (msg.type === 'audio') {
+      playAudio(msg.data)
+    }
   })
 
   // Play sound with access to DOM APIs
-  function playAudio({ source, volume }) {
-    const audio = new Audio(source)
-    audio.volume = volume
+  // function playAudio({ source, volume }) {
+  //   const audio = new Audio(source)
+  //   audio.volume = volume
+  //   audio.play()
+  // }
+
+  function playAudio(data) {
+    const blob = new Blob([data], { type: 'audio/ogg' })
+    const blobUrl = URL.createObjectURL(blob)
+    const audio = new Audio(blobUrl)
     audio.play()
+  }
+
+  function convertDataURIToBinary(base64) {
+    var raw = window.atob(base64)
+    var rawLength = raw.length
+    var array = new Uint8Array(new ArrayBuffer(rawLength))
+
+    for (let i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i)
+    }
+    return array
   }
 </script>

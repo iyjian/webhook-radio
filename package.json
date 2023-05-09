@@ -1,8 +1,8 @@
 {
   "name": "my-radio",
   "version": "1.0.0",
-  "productName": "my-radio",
-  "description": "Chrome extension template with Vue 3 + Vuex 4 + Vue Router 4 + Typescript 4.2 + SCSS + Webpack 5.",
+  "productName": "webhook radio",
+  "description": "webhook radio",
   "scripts": {
     "build": "cross-env NODE_ENV=\"production\" webpack",
     "build:dev": "cross-env NODE_ENV=\"development\" webpack",
@@ -32,10 +32,6 @@
   ],
   "author": "w.c. <52445078@qq.com>",
   "license": "Apache License 2.0",
-  "bugs": {
-    "url": "",
-    "email": ""
-  },
   "homepage": "",
   "devDependencies": {
     "@prettier/plugin-pug": "^1.13.5",

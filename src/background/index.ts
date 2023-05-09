@@ -15,7 +15,10 @@ chrome.runtime.onInstalled.addListener(() => {
   socket.on('connect', () => {
     console.log('connected')
     socket.emit('text2speech', 'hello world', (result: BinaryData) => {
-      playAudio(result)
+      setTimeout(async () => {
+        console.log(chrome.offscreen)
+        await playAudio(result)
+      }, 5000)
     })
   })
 
@@ -30,36 +33,23 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 })
 
-function playAudio(data: BinaryData) {
-  const blob = new Blob([data], { type: 'audio/ogg' })
-  const blobUrl = URL.createObjectURL(blob)
-  const audio = new Audio(blobUrl)
-  audio.play()
-}
-
-function convertDataURIToBinary(base64: string) {
-  var raw = window.atob(base64)
-  var rawLength = raw.length
-  var array = new Uint8Array(new ArrayBuffer(rawLength))
-
-  for (let i = 0; i < rawLength; i++) {
-    array[i] = raw.charCodeAt(i)
-  }
-  return array
-}
-
-async function playSound(source = 'default.wav', volume = 1) {
+async function playAudio(data: BinaryData) {
   await createOffscreen()
-  await chrome.runtime.sendMessage({ play: { source, volume } })
+  setTimeout(async () => {
+    await chrome.runtime.sendMessage({ type: 'audio', data })
+  }, 5000)
 }
 
-// const socket = new WebSocket('ws://localhost:3000')
 async function createOffscreen() {
-  // chrome.offscreen.onDocumentCreated.addListener((document) => {
-  if (await chrome.offscreen.hasDocument()) return
+  try {
+    await chrome.offscreen.closeDocument()
+  } catch (e) {
+    //
+  }
   await chrome.offscreen.createDocument({
-    url: 'offscreen.html',
+    url: chrome.runtime.getURL('offscreen.html'),
     reasons: [chrome.offscreen.Reason.AUDIO_PLAYBACK],
     justification: 'testing' // details for using the API
   })
+  console.log('offscreen created')
 }
