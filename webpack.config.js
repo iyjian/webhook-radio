@@ -128,12 +128,16 @@ const commonConfig = {
           }
         },
         {
-          from: './offscreen.html',
+          from: './offscreen/offscreen.html',
           to: './offscreen.html',
           transform: {
             transformer: transformHtml,
-            cache: true
+            cache: false
           }
+        },
+        {
+          from: './offscreen/offscreen.js',
+          to: './offscreen.js'
         }
       ]
     })
